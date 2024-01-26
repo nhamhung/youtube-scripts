@@ -1,0 +1,18 @@
+{
+  "files.associations": {
+    "my_library.h": "c",
+    "string": "c",
+    "iosfwd": "c",
+    "chrono": "c",
+    "variant": "c",
+    "stdio.h": "c",
+    "user.h": "c",
+    "fs.h": "c",
+    "dictionary.h": "c"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.formatting.provider": "none",
+  "C_Cpp.errorSquiggles": "disabled"
+}
