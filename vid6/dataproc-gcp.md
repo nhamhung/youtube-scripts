@@ -46,6 +46,8 @@ Couchbase local: http://localhost:8091
 
 # Spark Local Setup
 
+- Repo: https://github.com/nhamhung/spark-gcp-project
+
 - Spark: https://mvnrepository.com/search?q=org.apache.spark
 
 - Spark Streaming + Kafka Integration: https://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html
