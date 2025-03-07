@@ -1,3 +1,13 @@
+# Overview
+
+1. Set up GCP CLI
+2. Set up a Spark project
+3. Test Spark Streaming with Kafka
+4. Test Spark Batch with Couchbase
+5. Deploy Spark Jar to Cloud Storage
+6. Run Spark application to create partitioned data in Cloud Storage (replace Hadoop)
+7. Use BigQuery (replace Hive) to read external table in Cloud Storage
+
 # GCP CLI Setup
 
 GCloud CLI: https://cloud.google.com/sdk/docs/install
