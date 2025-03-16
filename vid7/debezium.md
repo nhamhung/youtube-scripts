@@ -159,3 +159,11 @@ DELETE FROM customers WHERE id=1003;
 INSERT INTO customers (id, first_name, last_name, email) VALUES
 (1005, 'Tom', 'Sawyer', 'tom.sawyer@barfoo.com');
 ```
+
+# Clean up
+
+```
+sudo docker stop $(sudo docker ps -a -q)
+
+sudo docker rm $(sudo docker ps -a -q)
+```
