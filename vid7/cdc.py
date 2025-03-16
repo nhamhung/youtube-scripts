@@ -13,7 +13,7 @@ pg_engine = create_engine(POSTGRES_DB_URL)
 consumer = KafkaConsumer(
     'dbserver1.inventory.customers',  # Change topic as needed
     bootstrap_servers='localhost:9092',
-    value_deserializer=lambda m: json.loads(m.decode('utf-8')),
+    # value_deserializer=lambda m: json.loads(m.decode('utf-8')),
     auto_offset_reset='earliest',
     enable_auto_commit=True
 )
@@ -53,4 +53,5 @@ def apply_cdc_event(event):
 # Listen for CDC Events
 print("Listening for changes...")
 for message in consumer:
-    apply_cdc_event(message.value)
+    if message.value: # Message can have None value due to Debezium's Tombstone event for Kafka log compaction
+      apply_cdc_event(json.loads(message.value.decode('utf-8')))
