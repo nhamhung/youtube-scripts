@@ -1,10 +1,12 @@
 # Overview
 
 1. Set up GCP VM instance (Debian)
-2. Set up Kafka + ZooKeeper
-3. Set up MySQL database with mock data
-4. Set up MySQL client
-5. Set up
+2. Setup Kafka + Zookeeper
+3. Setup Mysql + Postgresql
+4. Setup Mysql Debezium Connector and Kafka client
+5. Setup Conda and Python application
+6. Verify CDC in action
+7. Clean up
 
 # Set up GCP VM instance
 
