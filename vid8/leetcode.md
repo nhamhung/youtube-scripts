@@ -234,6 +234,7 @@
 
 ### 💡 **Key Points**
 
+- The main idea is we may have multiple candidates. For each of them, we want to try it by updating the current state and then recursively computes the solution. Afterwards, we restore to original state to start fresh with other candidates
 - Know how to use mutable data structures such as Set or List to try a candidate then backtrack
 - Know how to keep track of current state and terminating condition to stop recursion
 - Know how to determine valid candidates to try and backtrack on
