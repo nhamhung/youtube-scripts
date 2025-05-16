@@ -28,6 +28,8 @@
 
 - [General set up](https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/sample-apps/SETUP.md)
 
+- [Code](https://github.com/nhamhung/Gemini-Streamlit-Cloudrun)
+
 ```
 gcloud auth list
 
