@@ -11,4 +11,4 @@ A repository for all the scripts and instructions used in my Youtube videos
 7. [Change Data Capture (CDC) là gì? Ứng dụng CDC với Debezium + MySQL + PostgreSQL + Kafka](https://youtu.be/bOHkXixyGig?si=i8kwh3t8SKUbm_jS)
 8. [Cách luyện các Patterns LeetCode](https://youtu.be/svSB9fUPPLo?si=jbjWo1L1sjHu88v9)
 9. [Cùng học và hiểu nhanh PyTorch trong một giờ](https://youtu.be/eqjHlZEGis8?si=V5SbqSB1RY3_3F_U)
-10. [Viết ứng dụng GenAI với Google GenAI SDK]()
+10. [Viết ứng dụng GenAI với Google GenAI SDK](https://youtu.be/cmZ9-sDzYYY)
