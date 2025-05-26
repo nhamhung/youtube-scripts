@@ -43,6 +43,8 @@ make local-backend
 
 ## 4. Explain codebase
 
+[GitHub repo linked to GCP Cloud Build](https://github.com/nhamhung/1)
+
 ```
 - Makefile
 - Dockerfile
