@@ -24,7 +24,7 @@
 
 [Cloud Run](https://cloud.google.com/run/docs/overview/what-is-cloud-run)
 
-4. Introduce Cloud Shell Editor and run streamlit locally
+## 4. Introduce Cloud Shell Editor and run streamlit locally
 
 - [General set up](https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/sample-apps/SETUP.md)
 
