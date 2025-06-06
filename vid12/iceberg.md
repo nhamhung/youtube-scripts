@@ -7,6 +7,8 @@
 
 # 1. What is Apache Iceberg?
 
+https://iceberg.apache.org/
+
 - Table format to provide analytical functionalities for massive raw data tables in data lakes -> modern lakehouse architecture
 
 - Metadata layer on top of raw data to convert it into structured, high-performance "table" for sophisticated analytical applications
@@ -27,6 +29,8 @@
 
 # 2. What is MinIO?
 
+https://min.io/
+
 - High-performance object storage server that is API-compatible with Amazon S3
 
 - Own private cloud storage that works just like Amazon S3 and can run on own hardware (on-premise)
@@ -42,6 +46,8 @@
 - **Cloud and Kubernetes Native** to be suitable for containerised environment
 
 # 3. Set up Spark + Iceberg with Docker Compose
+
+https://iceberg.apache.org/spark-quickstart/
 
 - Prepare `docker-compose.yml` file
 
