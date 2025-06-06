@@ -13,3 +13,4 @@ A repository for all the scripts and instructions used in my Youtube videos
 9. [Cùng học và hiểu nhanh PyTorch trong một giờ](https://youtu.be/eqjHlZEGis8?si=V5SbqSB1RY3_3F_U)
 10. [Viết ứng dụng GenAI với Google GenAI SDK](https://youtu.be/cmZ9-sDzYYY)
 11. [Tạo một Multimodal Live Agent và các best practices để triển khai ứng dụng lên production](https://youtu.be/m7pvApNjf2w?si=KfTnB52dw7NN26x4)
+12. [Cùng tìm hiểu về Data Lakehouse với Apache Iceberg](https://youtu.be/iNDUK3heZnk)
