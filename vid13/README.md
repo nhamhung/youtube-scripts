@@ -1,4 +1,4 @@
-# sqlite3 commands
+# sqlite3 CLI commands
 
 ```
 # Connect to DB

@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS DANSO (
     maTinh INTEGER NOT NULL,
     nam INTEGER NOT NULL,
     dansoTB INTEGER NOT NULL,
-    PRIMARY KEY(maTinh, nam)
+    PRIMARY KEY(maTinh, nam),
     FOREIGN KEY(maTinh) REFERENCES TINH(maTinh)
 );
 """
