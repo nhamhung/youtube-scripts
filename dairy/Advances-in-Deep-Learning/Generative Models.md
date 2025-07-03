@@ -66,7 +66,7 @@ Nhìn chung, các $\mu_{D}, \mu_{Q}, \sigma_{Q}$ trong Equation này nhắm tớ
 
 Tuy nhiên, $z \sim Q$ cùng đồng nghĩa với việc chúng ta phải Sample $z$ và Sampling vốn là Non-Differentiable. Để giải quyết vấn đề này, một Reparameterization Trick được sử dụng nhằm Parameterize Encoder $Q$ thành một Normal Distribution dưới dạng $Q(z|x) = \mathcal{N}(z;\mu_{Q}(x),\sigma_{Q}^2(x))$ và nhờ đó, chúng ta có thể viết lại Sampling Objective trên như sau:
 
-$$\mathbb{E}_{z \sim Q}[\|x - \mu_{D}(z)\|_2] = \mathbb{E}_{\epsilon \sim \mathcal{N}(0, 1)}[\|\mu_{Q}(x) + \epsilon\sigma_{Q}(x)\|_2^2]$$
+$$\mathbb{E}_{z \sim Q}[\|x - \mu_{D}(z)\|_2^2] = \mathbb{E}_{\epsilon \sim \mathcal{N}(0, 1)}[\|\mu_{Q}(x) + \epsilon\sigma_{Q}(x)\|_2^2]$$
 
 Với $\epsilon \sim \mathcal{N}(0, 1)$, bản chất chúng ta đang Sample một Variable $\epsilon$ hoàn toàn Independent với $Q$ và nhờ đó, lược bỏ được bước Sampling trong Gradient Computation. Ngoài ra, $z$ cũng được thay thế bởi $\mu_{Q}(x) + \epsilon\sigma_{Q}(x)$ và nhờ vậy, Objective giờ đây hoàn toàn là Diffientiable và cho phép Backpropagation có thể được thực hiện.
 
