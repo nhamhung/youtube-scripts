@@ -3,7 +3,7 @@
 1. Common Data Engineer skills
 2. Examples
 
-![Diagram](https://github.com/nhamhung/youtube-scripts/blob/main/vid13/Data%20Engineer.jpg)
+![Diagram](https://github.com/nhamhung/youtube-scripts/blob/main/vid14/Data%20Engineer.jpg)
 
 # 1. Common Data Engineer skills
 
