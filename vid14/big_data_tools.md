@@ -2,6 +2,7 @@
 
 1. Common Data Engineer skills
 2. Examples
+3. Other skills
 
 ![Diagram](https://github.com/nhamhung/youtube-scripts/blob/main/vid14/Data%20Engineer.jpg)
 
@@ -27,3 +28,10 @@
 | Messaging & Streaming         | [Apache Kafka](https://kafka.apache.org/documentation/)                                                                                                                                                                                                                   |
 | Search & Observability        | [ElasticSearch - Logstash - Kibana](https://www.elastic.co/docs)                                                                                                                                                                                                          |
 | Interactive Data Analysis     | [Jupyter Notebook](https://docs.jupyter.org/en/latest/), [Apache Zeppelin](https://zeppelin.apache.org/)                                                                                                                                                                  |
+
+# 3. Other Skills
+
+- DevOps / Infrastructure
+- Web Development
+- Cybersecurity
+- AI/ML
