@@ -1,6 +1,6 @@
 # Discriminative Models
 
-Trái ngược với Generative Models là các Discriminative Models có khả năng Extract được một thông tin gì đó từ Input X để liên hệ và chuyển hoá nó thành Output Y. Chúng thường được sử dụng cho các tác vụ như dự đoán hay phân loại. Chúng ta có thể mô phỏng các dạng Model này bằng Conditional Probability $P(Y|X)$ với Y là Label và $X$ là dữ liệu. Thông thường, Output Y luôn được định nghĩa rõ ràng và Distribution của $P(y|x)$ tương đối dễ xác định
+Trái ngược với Generative Models là các Discriminative Models có khả năng Extract được một thông tin gì đó từ Input X để liên hệ và chuyển hoá nó thành Output Y. Đây chính là các kiểu Model đã rất quen thuộc thường được sử dụng cho các tác vụ như Regression hay Classification. Chúng ta có thể mô phỏng các dạng Model này bằng Conditional Probability $P(Y|X)$ với $Y$ là Label và $X$ là dữ liệu. Thông thường, Output $Y$ luôn được định nghĩa rõ ràng và Distribution của $P(y|x)$ tương đối dễ xác định.
 
 # Generative Models
 
@@ -42,7 +42,7 @@ $$\frac{P(z)P_{D}(x|z)}{Q(z|x)} \to 1$$
 
 $$log\frac{P(z)P_{D}(x|z)}{Q(z|x)} \to 0$$
 
-$$D_{KL}(Q(z | x) || P_{E}(z | x)) \to 0$$
+$$D_{KL}(Q(z | x) \| P_{E}(z | x)) \to 0$$
 
 Chúng ta có thể viết lại Equation này ở dạng sau đây:
 
@@ -127,3 +127,87 @@ $$P(x) = P(z)|det(\frac{\partial{z}}{\partial{x}})| = P(G^{-1}(x))|det(\frac{\pa
 - $x_{2} = exp(-s(y_{1})) \odot y_{2} + t(y_{1})$
 
 Từ đó, chúng ta có một kiểu Generative Model mới có Performance tốt mà lại rất Stable trong việc Training. Tuy vậy, yếu điểm dễ thấy đó là Flow-based Models chỉ cho phép sử dụng một kiểu kiến trúc gồm các Invertible Layers khá hạn hẹp.
+
+# Auto-Regressive Generation
+
+Là một dạng Density-Based Model, Auto-Regressive Generation nhắm tới việc trực tiếp tính toán $P(x)$ bằng cách tính Probability của lần lượt từng Pixel trong Image, dựa trên Formula:
+
+$P(x) = P(x_1)P(x_2 | x_1)P(x_3|x_1, x_2)P(x_4|x_1, x_2, x_3)...$
+
+với $x_i$ là từng Pixel. Nhờ đó, việc Estimate $P(x)$ là tương đối dễ dàng. Ngoài ra, để Sample $x$ chúng ta cũng chỉ cần Sample lần lượt từng Pixel:
+
+$$x_1 \sim P(X_1); x_2 \sim P(X_2 | x_1)$$
+
+Có thể thấy, các dạng Model này có tốc độ Inference tương đối chậm do chỉ có thể Generate từng Pixel một. Tuy nhiên, thời gian Training không bị ảnh hưởng bởi điều này do có thể Train đồng thời tất cả các Pixel thông qua một phương pháp gọi là Teacher Forcing.
+
+Ngoài ra, với các Sequence rất dài, Auto-Regressive Generation cũng gặp khó khăn bởi 2 yếu tố:
+
+- Với những Pixel đầu tiên, Model cần Generate Output chính xác nếu không muốn làm ảnh hưởng tới tất cả các Pixel còn lại phụ thuộc vào chúng
+
+- Với những Pixel cuối cùng, Model cần Capture được rất nhiều Dependencies của các Pixel trước đó để Generate được Output phù hợp
+
+Do đó, một trong những cách giải quyết là sử dụng Tokenization / Vector-Quantization để làm ngắn Sequence lại, tuy nhiên với Trade-Off đó là $x_i$ thường trở nên phức tạp hơn.
+
+Ngoài ra, Auto-Regressive Generation cũng cho phép Compress dữ liệu hiệu quả bởi nguyên tắc:
+
+- Dữ liệu càng dễ đoán thì càng chứa ít thông tin và càng cần ít Bits để Encode
+- Dữ liệu càng khó đoán thì càng chứa nhiều thông tin và càng cần nhiều Bits để Encode
+
+Nhờ vậy, kết hợp với Arithmetic Coding, Auto-Regressive Generation cho phép phát triển lên một phương thức gọi là Adaptive Arithmetic Encoding thường được sử dụng trong Lossless Data Compression.
+
+# Vector Quantization
+
+Auto-Regressive Generation tuy là một kiểu Generative Model rất hiệu quả tuy nhiên ở dạng Vanilla lại có những hạn chế lớn đến từ Pixel-by-Pixel Generation. Thay vào đó, Vector Quantization cung cấp một phương pháp cho phép nhóm các Pixel thành từng Patch và do đó, khiến tác vụ trở nên đơn giản hơn rất nhiều đến từ 2 lý do:
+
+- Nhiệm vụ sản sinh ra Patch mới giờ đây phụ thuộc vào một nhóm Pixel thay vì từng cái riêng lẻ
+- Độ dài của Sequence ngắn hơn nhiều và do đó, Context mà các Patch cuối cần chứa đựng cũng nhỏ đi đáng kể
+
+Quá trình này còn mang một tên gọi khác là Tokenization. Mỗi Patch $p_{i}$ chứa nhiều Pixel sẽ được quy đổi thành một Token $t_i \in {1, ..., K}$. Từ một Pixel Image $x \in \mathbb{R}^{H \times W \times 3}$ sẽ sản sinh ra một Token Image $z \in {1...K}^{h \times w}$ có Dimension giảm thiểu đi đáng kể.Nhờ đó, Autoregressive Model $P(t) = P(t_1)P(t_2 | t_1)P(t_3|t_1, t_2)P(t_4|t_1, t_2, t_3)...$ có thể được Train hiệu quả hơn
+
+Tuy nhiên, làm thế nào để chúng ta có thể quy đổi từ một Continuous Image (gồm các Pixel) thành một Discrete Image (gồm các Token) mà vẫn đảm bảo Operation này là Differentiable?
+
+Câu trả lời nằm ở một phương thức có tên gọi là Vector Quantization-Variational Autoencoder (VQ-VAE). Ngoài việc vẫn sử dụng Decoder $P_{D}(x | z)$ và Encoder $Q(z | x)$ là các Probability Distribution, phần VQ trong VQ-VAE phụ trách việc Quantize $z$ bằng cách lựa chọn Embedding gần nhất với nó trong một Codebook ${e_1...e_K}$ theo Formula $q(z) = argmin_{e_k}\|z - e_k\|$. Tuy nhiên, làm thế nào để chúng ta có thể Backpropagate qua Vector Quantization $q$ hay xác định $\nabla q(z)$?
+
+Về bản chất, Vector Quantization $q(z)$ là Non-Differentiable. Tuy nhiên, chúng ta có thể dùng 1 Trick gọi là Straight-Through Estimator mang giả định $\nabla q(z) = I (identity)$. Dù đây là 1 Ugly Hack tuy nhiên nó vẫn đang được sử dụng thành công trong thực tế. Nhờ thế, Gradient vẫn có thể chạy qua VQ và cho phép Backpropagation hoạt động với VQ-VAE.
+
+Dẫu vậy, VQ-VAE vẫn chỉ là một dạng Variant của VAE cho nên chịu chung những hạn chế về chất lượng Output. Ngoài ra, Cookbook càng sử dụng nhiều Bits thì số lượng Entry càng lớn Exponentially dẫn tới tiêu tốn nhiều GPU Memory và Gradients càng ngày càng Sparse làm chậm Training hơn.
+
+Để cải thiện chất lượng Output, VQ-GAN là một giải pháp khác thay thế VAE bằng GAN và nhờ đó, trở thành dạng Tokenizer mặc định ngày nay. Tuy nhiên, các vấn đề liên quan đến kích thước của Codebook vẫn hiện hữu. Vì thế, các phương thức Quantization khác chẳng hạn như Lookup-Free Quantization (LFQ) cũng đã được phát triển. LFQ chỉ sử dụng các hàm đơn giản như $q(z) = sign(z)$ với $sign(z_i) = 1_{[z_i > 0] - 1_[z_i < 0]}$ và do vậy có thể loại bỏ hoàn toàn Codebook và các vấn đề liên quan tới nó.
+
+# Dall-E
+
+Là một trong những LLM Model lớn và thành công đầu tiên, Dall-E tận dụng việc có thể quy đổi cả Image lẫn Text thành các Token Stream để xây dựng một mô hình được Train và có thể Generate cả 2 dạng dữ liệu này dựa trên Formula $P(t| \hat{t} ) = P(t_1| \hat{t} )P(t_2|t_1, \hat{t} )...P(t_L|t_1,...,t_{L-1}, \hat{t} )$. Sử dụng các Dataset có cả Image lẫn Caption, kiểu kiến trúc Autoregression với Sparse Transformer, Mixed-precision và Shared Multi-GPU Training, Dall-E nhanh chóng trở thành Start-of-the-art ở thời điểm mới ra mắt với khả năng Generate các Image từ Text với chất lượng chưa từng thấy.
+
+Xét về các góc độ khác nhau, những yếu tố cho phép Dall-E thực sự "cất cánh" phần lớn xuất phát từ số lượng và chất lượng của Dataset cũng như Scale điện toán khổng lồ. Về bản chất, Dall-E là một Model khá đơn giản tuy nhiên vẫn có thể đạt được Performance đáng kinh ngạc nhờ những yếu tố trên. Đây là một trong những bài học mà các DL Researchers liên tục nhận được trong suốt 10-15 năm qua.
+
+# Diffusion Models
+
+Là một trong những Generative Model cạnh tranh mạnh mẽ được với Autoregression về Performance. Thay vì mô phỏng Image theo từng Patch-by-Patch, Diffusion mô phỏng đồng thời toàn bộ Image bằng cách bắt đầu với một phiên bản $x_0$ hoàn toàn sạch, sau đó dần dần thêm Noise $q(x_t | x_{t-1}) = \mathcal{N}(\sqrt{1 - \beta}x_t, B_tI)$ qua từng Step $t$ với $\beta_t$ tăng dần theo $t$. Điểm đặc biệt đó là do sử dụng Gaussian Noise, chúng ta có thể tính toán được $q(x_t|x_0)$ bằng một Closed-form Equation:
+
+$$q(x_t|x_0) = \int\prod^t_{i=1}q(x_i|x_{i - 1})dx_{1...t-1} = \mathcal{N}(\sqrt{\bar{\alpha}_t}x_0, (1 - \bar{\alpha}_t)I)$$
+
+với $\bar{\alpha}_t = \prod^t_{i=1}(1 - \beta_i)$. Vậy, mục đích của việc thêm Noise này là gì?
+
+Từ một Noisy Image, Diffusion muốn học một quá trình ngược lại nhằm loại bỏ Noise để lấy được ảnh gốc. Nếu làm được điều này, về bản chất Diffusion sẽ có thể Generate các Image mới trực tiếp từ Noise. Chúng ta cũng có thể mô phỏng quá trình ngược lại này với $P(x_t) = \mathbb{N}(0, I)$ và Denoise Distribution $P(x_{t - 1} | x_t) = \mathbb(\mu_\theta(x_t), \sum_\theta(x_t))$ bằng Formula sau:
+
+$$P(x_{0...T}) = P(x_T)\prod^T_{t=1}P(x_{t-1}|x_t)$$
+
+$$P(x_0) = \int P(x_{0...T})dx_{1...T}$$
+
+với $P(x_0)$ cho phép xác định được xác suất của Image $x_0$. Tuy nhiên, việc tính xác suất $P(x_0)$ là Intractable vì đòi hỏi Integrate qua tất cả các $x_{1...T}$ có thể được Generate. Thay vì thế, chúng ta có thể Maximise Evidence Lower Bound (ELBO):
+
+$$logP(x_0) \ge E_q[log\frac{P(x_{0...T})}{q(x_{1...T}|x_0)}]$$
+
+Tuy khá nặng lý thuyết toán, phần thuật toán của Diffusion lại tương đối đơn giản bao gồm 2 phần:
+
+- Training: Chọn một Random Image, thêm Random Noise vào nó và sau đó dự đoán chúng ta đã thêm Noise gì
+
+- Sampling: Chọn một Random Noise, dần dần Remove Noise từ nó để Generate được Image mới
+
+Để Train được, Diffusion đòi hỏi một kiểu kiến trúc U-Net có khả năng Downsample Input và sau đó Upsample để tạo ra Output có cùng Dimension. Ngoài ra, kết nối giữa các Downsample và Upsample Layer là các Skip Connections. Tới năm 2021, Guided Diffusion được Publish với một số đặc điểm giúp nó thực sự trở thành State-of-the-art:
+
+- Học Variance $\sum(x_t)$
+- Architecture Scale lớn hơn với nhiều Layer, Attention Head, ... hơn
+- Sử dụng Classifier Guidance (còn gọi là Conditioning) nhằm định hướng Model tới việc Generate các Image thuộc một số Label cụ thể. Từ đó, chúng ta có thêm khả năng kiểm soát quá trình Denoise để tạo ra các Image theo ý muốn hơn
+
+Như vậy, nhìn chung Diffusion là một dạng Model có thể Generate các Output Image có chất lượng cao. Tuy nhiên, nó khá là khó kiểm soát và rất tốn kém về mặt điện toán với nhiều bước Sampling lẫn đòi hỏi cả Input và Output phải đều có độ phân giải cao
