@@ -8,7 +8,7 @@ Tuy nhiên, các Discriminative Models không có khả năng học được cá
 
 Với một Generative Model $P(X)$, chúng ta kì vọng chúng có thể học được Distribution của dữ liệu $X$ và từ đó thực thi được 2 tác vụ sau:
 
-- **Sampling** để tạo ra được các Sample $x$ mới từ $P(X)$ hay $x \sim P(X)$. Nói cách khác, chúng ta muốn có khả năng Generate được các Sample mới tương tự như Data
+- **Sampling** để tạo ra được các Sample $x$ mới từ $P(X)$ hay $x \sim P(X)$. Nói cách khác, chúng ta muốn có khả năng Generate được các Sample mới tương tự như Data kể cả khi không biết Probability Distribution
 
 - **Density Estimation** để dự đoán được xác suất của một $x$ từ $P(X)$ hay $P(X = x)$. Nói cách khác, chúng ta muốn Esimate luôn được Probability Distribution của Data
 
