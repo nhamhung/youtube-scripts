@@ -211,3 +211,22 @@ Tuy khá nặng lý thuyết toán, phần thuật toán của Diffusion lại t
 - Sử dụng Classifier Guidance (còn gọi là Conditioning) nhằm định hướng Model tới việc Generate các Image thuộc một số Label cụ thể. Từ đó, chúng ta có thêm khả năng kiểm soát quá trình Denoise để tạo ra các Image theo ý muốn hơn
 
 Như vậy, nhìn chung Diffusion là một dạng Model có thể Generate các Output Image có chất lượng cao. Tuy nhiên, nó khá là khó kiểm soát và rất tốn kém về mặt điện toán với nhiều bước Sampling lẫn đòi hỏi cả Input và Output phải đều có độ phân giải cao
+
+# Latent Diffusion
+
+Nhằm giải quyết vấn đề lớn nhất của Diffusion đó là tốn kém về điện toán, Latent Diffusion sử dụng thêm Autoencoder nhằm Encode các Patch của Image thành một Latent Code ở Low Dimension, sau đó Decode lại thành High Dimension Output. Diffusion do đó sẽ được chạy trực tiếp trên các Latent Code sử dụng kiến trúc U-Net. Ngoài ra, Model cũng được Condition với các dữ liệu Text, Image, Semantic Map, ... Nhờ Autoencoder, tốc độ Training và Generation sẽ gia tăng đáng kể và chúng ta có thể áp dụng Diffusion lên cả những Image ở độ phân giải cao. Mô hình Imagegen của Google chính là một trong những Diffusion Model có Scale lớn đầu tiên như vậy. Tương tự, OpenAI cũng cho ra mắt Dall-E 2 / 3 với kiến trúc gần như tương tự.
+
+Vậy một khi đã có một Model có khả năng Generate các Image bất kỳ từ Text Prompt rồi, thì chúng ta cần làm gì tiếp?
+
+Tuy đã có khả năng tạo ra các Image rất chất lượng và rõ nét, sẽ là khá khó để có thể điều khiển các yếu tố như vị trí, cấu trúc hay Layout của các Output Image. Do vậy, hướng tập trung tiếp theo nhắm đến việc Control được các Output của Latent Diffusion này hơn không chỉ dừng lại ở việc Conditioning lên Text. Bắt đầu với một mô hình Latent Diffusion đã được Pre-trained, chúng ta muốn Condition bằng các Input khác chẳng hạn như từ các Sketch hay Pose Tracks để định hướng cấu trúc. Sử dụng một Copy của Encoder với các Input thêm vào và các Zero-initialised Convolution Layer với Weights 0, chúng ta sẽ có khả năng Generate được các Output Image tuân theo định hướng như mong muốn. ControlNet chính là một trong những kiểu kiến trúc này.
+
+# Nên sử dụng Generative Model nào?
+
+Với nhiều công cụ trong tay, làm sao để biết nên lựa chọn cái nào trong trường hợp nào. Sau đây sẽ là một số gợi ý để lựa chọn các Generative Model tương ứng với Use Case:
+
+- Nếu một Pre-trained Model đã sẵn có:
+  - Và bạn có nhiều tài nguyên Compute: Tự Train Diffusion hoặc Autoregressive của riêng mình
+  - Nhưng bạn có ít tài nguyên Compute: Fine-tune các Diffusion hoặc Autoregressive sẵn có
+- Nếu không có sẵn Pre-trained Model:
+  - Và bạn có nhiều dữ liệu + Compute: Tự Train Diffusion hoặc Autoregressive của riêng mình
+  - Nhưng bạn có ít dữ liệu + Compute: Tự Train Variational Autoencoder tuy nhiên Output sẽ Low Resolution
